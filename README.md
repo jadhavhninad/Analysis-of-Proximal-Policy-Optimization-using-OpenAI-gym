@@ -1,5 +1,4 @@
 ## [](#header-2)Analysis of Proximal Policy Optimization algorithm Using OpenAI Gym
-[Link to Github Repo](https://github.com/jadhavhninad/Analysis-of-Proximal-Policy-Optimization-using-OpenAI-gym).
 
 ### [](#header-3) Goals:
 *   Comparing the algorithm performance with other baseline techniques for OpenAI game environment
@@ -12,7 +11,7 @@
 
 *   Performance of different neural network architectures is explored:
 
-!["CNN vs LSTM - Reward function"]({{ site.url }}/Plots/Reward_CNN_LSTM.png)
+!["CNN vs LSTM - Reward function"](https://github.com/jadhavhninad/Analysis-of-Proximal-Policy-Optimization-using-OpenAI-gym/blob/master/Plots/Reward_CNN_LSTM.png)
 
 
 *   GPU based training was done using [Google Collaboratory](https://colab.research.google.com/notebooks/welcome.ipynb)
