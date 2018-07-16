@@ -1,0 +1,64 @@
+!apt-get install -y python-numpy python-dev cmake zlib1g-dev libjpeg-dev xvfb libav-tools xorg-dev python-opengl libboost-all-dev libsdl2-dev swig 
+!pip install 'gym[atari]' mpi4py scipy opencv-python joblib cloudpickle
+
+
+###MOUNT DRIVE####################
+
+# Install a Drive FUSE wrapper.
+# https://github.com/astrada/google-drive-ocamlfuse
+!apt-get install -y -qq software-properties-common python-software-properties module-init-tools
+!add-apt-repository -y ppa:alessandro-strada/ppa 2>&1 > /dev/null
+!apt-get update -qq 2>&1 > /dev/null
+!apt-get -y install -qq google-drive-ocamlfuse fuse
+
+
+
+# Generate auth tokens for Colab
+from google.colab import auth
+auth.authenticate_user()
+
+
+# Generate creds for the Drive FUSE library.
+from oauth2client.client import GoogleCredentials
+creds = GoogleCredentials.get_application_default()
+import getpass
+!google-drive-ocamlfuse -headless -id={creds.client_id} -secret={creds.client_secret} < /dev/null 2>&1 | grep URL
+vcode = getpass.getpass()
+!echo {vcode} | google-drive-ocamlfuse -headless -id={creds.client_id} -secret={creds.client_secret}
+
+
+# Create a directory and mount Google Drive using that directory.
+!mkdir -p GYM_Drive
+!google-drive-ocamlfuse GYM_Drive
+
+!ls GYM_Drive/
+
+# Create a file in Drive.
+#!echo "This newly created file will appear in your Drive file list."
+
+!google-drive-ocamlfuse GYM_Drive
+import os
+
+!pwd
+!ls
+os.chdir('GYM_Drive/baselines-master') #-> USE THIS TO CHANGE DIRECTORY every time you login new
+
+
+##RUN A SIMULATION
+import os
+!pwd
+!python -V
+os.chdir('/content/GYM_Drive/baselines-master')
+#!python -m baselines.ppo2.run_atari --help
+!python -m baselines.ppo2.run_atari --env MsPacmanNoFrameskip-v0 --num-timesteps 100000 --policy cnn
+
+print("done")
+
+
+##COPY TEMP FILES######################################
+import os
+#os.chdir('/tmp/openai-2018-04-30-01-53-31-735179')
+#os.chdir('/tmp')
+!ls -l
+!mv openai-2018-04-30-15-22-01-999264 /content/GYM_Drive 
+
